@@ -1,0 +1,27 @@
+{
+  "name": "google-authenticator-2fa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TOTP two-factor authentication with Google Authenticator: enrollment, QR code, verification and backup codes",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "code": "node scripts/code.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "otplib": "^13.5.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
+  },
+  "license": "MIT"
+}

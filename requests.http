@@ -1,0 +1,65 @@
+# HTTP requests for VS Code REST Client or IntelliJ HTTP Client.
+# Run "npm start" first, then send requests top to bottom.
+
+@host = http://localhost:3000
+@email = ada@example.com
+@password = correct-horse-battery
+
+### Health
+GET {{host}}/health
+
+### Register
+POST {{host}}/api/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Login (save token from the response)
+# @name login
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Current user
+GET {{host}}/api/me
+Authorization: Bearer {{login.response.body.token}}
+
+### Start 2FA setup (save secret from the response)
+# @name setup
+POST {{host}}/api/2fa/setup
+Authorization: Bearer {{login.response.body.token}}
+
+### Enable 2FA with a code from the authenticator app
+POST {{host}}/api/2fa/enable
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "token": "123456"
+}
+
+### Login again: password returns a challengeId
+# @name challenge
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Complete login with a TOTP or backup code
+POST {{host}}/api/2fa/verify
+Content-Type: application/json
+
+{
+  "challengeId": "{{challenge.response.body.challengeId}}",
+  "token": "123456"
+}
